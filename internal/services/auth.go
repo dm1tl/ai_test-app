@@ -1,6 +1,7 @@
 package services
 
 import (
+	"ai_test-app/clients/sso"
 	appmodels "ai_test-app/internal/app_models"
 	"ai_test-app/internal/repository"
 	"context"
@@ -9,10 +10,10 @@ import (
 
 type AuthService struct {
 	repo      repository.Authorization
-	ssoClient *grpc.Client
+	ssoClient sso.SSOProvider
 }
 
-func NewAuthService(repo repository.Authorization, ssoclient *grpc.Client) *AuthService {
+func NewAuthService(repo repository.Authorization, ssoclient sso.SSOProvider) *AuthService {
 	return &AuthService{
 		repo:      repo,
 		ssoClient: ssoclient,
@@ -45,7 +46,7 @@ func (s *AuthService) Login(ctx context.Context, input appmodels.SignInInput) (s
 }
 
 func (s *AuthService) Validate(ctx context.Context, token string) (int64, error) {
-	const op = "pkg.service.Validate()"
+	const op = "internal.service.Validate()"
 	id, err := s.ssoClient.Validate(ctx, token)
 	if err != nil {
 		return 0, fmt.Errorf("%s: %w", op, err)

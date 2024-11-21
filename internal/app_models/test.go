@@ -6,9 +6,14 @@ type TestInput struct {
 	Message string `json:"message"`
 }
 
+type Answer struct {
+	AnswerTxt string `json:"answertxt"`
+	IsCorrect bool   `json:"iscorrect"`
+}
+
 type Question struct {
 	Question string   `json:"question"`
-	Answers  []string `json:"answers"`
+	Answers  []Answer `json:"answers"`
 }
 
 type TestOutput struct {
