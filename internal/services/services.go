@@ -7,6 +7,7 @@ import (
 
 type Service struct {
 	Authorization
+	Test
 }
 
 type Authorization interface {
@@ -16,4 +17,6 @@ type Authorization interface {
 }
 
 type Test interface {
+	Create(ctx context.Context, input appmodels.TestInput) (appmodels.TestOutput, error)
+	Answer(ctx context.Context, input appmodels.AnswersInput) error
 }
