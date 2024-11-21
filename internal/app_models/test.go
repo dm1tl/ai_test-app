@@ -1,19 +1,36 @@
 package appmodels
 
+import "time"
+
 type TestInput struct {
 	Message string `json:"message"`
 }
 
-type TestOutput struct {
-	Theme     string      `json:"theme"`
-	Questions []Questions `json:"questions"`
-}
-
-type Questions struct {
+type Question struct {
 	Question string   `json:"question"`
 	Answers  []string `json:"answers"`
 }
 
+type TestOutput struct {
+	TestId    int64      `json:"-"`
+	Theme     string     `json:"theme"`
+	Questions []Question `json:"questions"`
+}
+
 type AnswersInput struct {
-	Count int64 `json:"count"`
+	TestId       int64 `json:"-"`
+	UserId       int64 `json:"-"`
+	CorrectCount int64 `json:"correctcount"`
+}
+
+type UserScore struct {
+	UserId    int64     `json:"userid"`
+	ThemeId   int64     `json:"themeid"`
+	Score     int64     `json:"score"`
+	CreatedAt time.Time `json:"-"`
+}
+
+type Themes struct {
+	ThemeId int64  `json:"themeid"`
+	Name    string `json:"name"`
 }
