@@ -18,23 +18,33 @@ func NewTest(db *sqlx.DB) *Test {
 	}
 }
 
-func (t *Test) Create(ctx context.Context, userId int64, input appmodels.TestOutput) error {
-	const op = "internal.repository.test.Create()"
-	err := executeQuery(ctx, t.db, "INSERT INTO tests(id, user_id, theme) VALUES($1, $2, $3)", input.TestId, userId, input.Theme)
-	if err != nil {
-		return fmt.Errorf("%s: %w", op, err)
-	}
-	return nil
-}
+//func (t *Test) Create(ctx context.Context, userId int64, input appmodels.TestOutput) (int64, error) {
+//	const op = "internal.repository.test.Create()"
+//	var id int64
+//
+//	stmt, err := t.db.PrepareContext(ctx, "INSERT INTO tests(user_id, theme) VALUES($1, $2) RETURNING id")
+//	if err != nil {
+//		return 0, fmt.Errorf("%s: %w", op, err)
+//	}
+//	defer stmt.Close()
+//	res, err := stmt.ExecContext(ctx, stmt, userId, input.Theme)
+//
+//}
 
-func (t *Test) Answer(ctx context.Context, input appmodels.AnswersInput) error {
+func (t *Test) Answer(ctx context.Context, userId int64, input appmodels.AnswersInput) (int64, error) {
 	const op = "internal.repository.test.Answer()"
-	err := executeQuery(ctx, t.db, "UPDATE tests SET score = score + $1 WHERE id = $2 AND user_id = $3",
-		input.CorrectCount, input.TestId, input.UserId)
+	query := "INSERT INTO tests (user_id, theme) VALUES ($1, $2) ON CONFLICT (user_id, theme) DO UPDATE SET score = score + $3 RETURNING id"
+	stmt, err := t.db.PrepareContext(ctx, query)
 	if err != nil {
-		return fmt.Errorf("%s: %w", op, err)
+		return 0, fmt.Errorf("%s: %w", op, err)
 	}
-	return nil
+	defer stmt.Close()
+	res := stmt.QueryRowContext(ctx, userId, input.Theme, input.CorrectCount)
+	var id int64
+	if err := res.Scan(&id); err != nil {
+		return 0, fmt.Errorf("%s: %w", op, err)
+	}
+	return id, nil
 }
 
 //func (t *Test) GetAllTests(ctx context.Context, userId int64) ([]appmodels.TestOutput, error) {

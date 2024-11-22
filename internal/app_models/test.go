@@ -25,9 +25,9 @@ type TestOutput struct {
 }
 
 type AnswersInput struct {
-	TestId       int64 `json:"-"`
-	UserId       int64 `json:"-"`
-	CorrectCount int64 `json:"correctcount"`
+	TestId       int64  `json:"-"`
+	Theme        string `json:"theme"`
+	CorrectCount int64  `json:"correctcount"`
 }
 
 type UserScore struct {

@@ -4,7 +4,6 @@ import (
 	"ai_test-app/clients/testgen"
 	appmodels "ai_test-app/internal/app_models"
 	"ai_test-app/internal/repository"
-	"ai_test-app/internal/services/formatting"
 	"context"
 	"fmt"
 )
@@ -28,20 +27,16 @@ func (t *TestService) Create(ctx context.Context, userId int64, input appmodels.
 	if err != nil {
 		return &output, fmt.Errorf("%s: %w", op, err)
 	}
-	formatting.FormatTheme(&test)
-	if err := t.repo.Create(ctx, userId, test); err != nil {
-		return nil, fmt.Errorf("%s: %w", op, err)
-	}
 	return &test, nil
 }
 
-func (t *TestService) Answer(ctx context.Context, input appmodels.AnswersInput) error {
+func (t *TestService) Answer(ctx context.Context, userId int64, input appmodels.AnswersInput) (int64, error) {
 	const op = "internal.services.Answer()"
-	err := t.repo.Answer(ctx, input)
+	id, err := t.repo.Answer(ctx, userId, input)
 	if err != nil {
-		return fmt.Errorf("%s: %w", op, err)
+		return 0, fmt.Errorf("%s: %w", op, err)
 	}
-	return nil
+	return id, nil
 }
 
 //func (t *TestService) GetAllTests(ctx context.Context, userId int64) ([]appmodels.TestOutput, error) {

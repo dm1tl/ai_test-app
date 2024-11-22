@@ -42,17 +42,25 @@ func (h *Handler) genTest(c *gin.Context) {
 func (h *Handler) answTest(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
 	defer cancel()
+	userId, err := h.getUserId(c)
+	if err != nil {
+		logrus.Error(err)
+		response.NewErrorResponse(c, http.StatusInternalServerError, "couldn't identificate user")
+		return
+	}
 	var input appmodels.AnswersInput
 	if err := c.BindJSON(&input); err != nil {
 		logrus.Error(err)
 		response.NewErrorResponse(c, http.StatusBadRequest, "invalid input data")
 		return
 	}
-	err := h.service.Answer(ctx, input)
+	id, err := h.service.Answer(ctx, userId, input)
 	if err != nil {
 		logrus.Error(err)
 		response.NewErrorResponse(c, http.StatusInternalServerError, "couldn't save your answers")
 		return
 	}
-	c.JSON(http.StatusOK, response.NewStatusResponse("your answers succesfully loaded"))
+	c.JSON(http.StatusOK, map[string]int64{
+		"test_id": id,
+	})
 }

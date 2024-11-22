@@ -3,9 +3,10 @@ CREATE TABLE users (
     username VARCHAR(255) NOT NULL
 );
 CREATE TABLE tests (
-    id INT PRIMARY KEY NOT NULL,
+    id SERIAL PRIMARY KEY,
     user_id INT,
     theme VARCHAR(255) NOT NULL,
-    score INT,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    score INT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT unique_user_theme UNIQUE (user_id, theme)
 );
