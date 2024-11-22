@@ -12,11 +12,9 @@ type Repository struct {
 
 type Authorization interface {
 	Create(ctx context.Context, userId int64) error
-	Login(ctx context.Context, input appmodels.SignInInput) (string, error)
-	Validate(ctx context.Context, token string) (int64, error)
 }
 
-type Test interface {
+type TestManager interface {
 	Create(ctx context.Context, input appmodels.TestInput) error
 	Answer(ctx context.Context, input appmodels.AnswersInput) error
 }

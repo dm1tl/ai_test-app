@@ -9,11 +9,11 @@ import (
 )
 
 type TestService struct {
-	repo repository.Test
+	repo repository.TestManager
 	gen  testgen.TestGenerator
 }
 
-func NewTestService(repo repository.Test, gen testgen.TestGenerator) *TestService {
+func NewTestService(repo repository.TestManager, gen testgen.TestGenerator) *TestService {
 	return &TestService{
 		repo: repo,
 		gen:  gen,
@@ -31,4 +31,13 @@ func (t *TestService) Create(ctx context.Context, input appmodels.TestInput) (*a
 		return nil, nil
 	}
 	return &test, nil
+}
+
+func (t *TestService) Answer(ctx context.Context, input appmodels.AnswersInput) error {
+	const op = "internal.services.Answer()"
+	err := t.repo.Answer(ctx, input)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+	return nil
 }

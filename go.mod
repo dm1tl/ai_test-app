@@ -37,5 +37,6 @@ require (
 
 require (
 	github.com/gin-gonic/gin v1.10.0
+	github.com/jmoiron/sqlx v1.4.0
 	golang.org/x/sys v0.20.0 // indirect
 )
