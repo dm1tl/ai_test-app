@@ -7,13 +7,15 @@ type TestInput struct {
 }
 
 type Answer struct {
+	AnswerId  int64  `json:"-"`
 	AnswerTxt string `json:"answertxt"`
 	IsCorrect bool   `json:"iscorrect"`
 }
 
 type Question struct {
-	Question string   `json:"question"`
-	Answers  []Answer `json:"answers"`
+	QuestionId int64    `json:"-"`
+	Question   string   `json:"question"`
+	Answers    []Answer `json:"answers"`
 }
 
 type TestOutput struct {
@@ -30,12 +32,7 @@ type AnswersInput struct {
 
 type UserScore struct {
 	UserId    int64     `json:"userid"`
-	ThemeId   int64     `json:"themeid"`
+	TestId    int64     `json:"themeid"`
 	Score     int64     `json:"score"`
 	CreatedAt time.Time `json:"-"`
-}
-
-type Themes struct {
-	ThemeId int64  `json:"themeid"`
-	Name    string `json:"name"`
 }

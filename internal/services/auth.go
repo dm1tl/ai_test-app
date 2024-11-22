@@ -26,7 +26,7 @@ func (a *AuthService) Create(ctx context.Context, user appmodels.User) error {
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
-	err = a.repo.Create(ctx, id)
+	err = a.repo.Create(ctx, id, user.Username)
 	if err != nil {
 		if rollback := a.ssoClient.Delete(ctx, id); rollback != nil {
 			return fmt.Errorf("failed to rollback user in grpc after DB error %s: %w", op, rollback)
