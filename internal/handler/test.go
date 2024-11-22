@@ -24,7 +24,13 @@ func (h *Handler) genTest(c *gin.Context) {
 		response.NewErrorResponse(c, http.StatusBadRequest, "empty data, please write some infornation about test")
 		return
 	}
-	test, err := h.service.Test.Create(ctx, input)
+	userId, err := h.getUserId(c)
+	if err != nil {
+		logrus.Error(err)
+		response.NewErrorResponse(c, http.StatusInternalServerError, "couldn't identificate user")
+		return
+	}
+	test, err := h.service.Test.Create(ctx, userId, input)
 	if err != nil {
 		logrus.Error(err)
 		response.NewErrorResponse(c, http.StatusInternalServerError, "couldn't generate test, try again")

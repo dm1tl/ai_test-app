@@ -20,14 +20,14 @@ func NewTestService(repo repository.TestManager, gen testgen.TestGenerator) *Tes
 	}
 }
 
-func (t *TestService) Create(ctx context.Context, input appmodels.TestInput) (*appmodels.TestOutput, error) {
+func (t *TestService) Create(ctx context.Context, userId int64, input appmodels.TestInput) (*appmodels.TestOutput, error) {
 	const op = "internal.services.Create()"
 	var output appmodels.TestOutput
 	test, err := t.gen.Generate(ctx, input)
 	if err != nil {
 		return &output, fmt.Errorf("%s: %w", op, err)
 	}
-	if err := t.repo.Create(ctx, input); err != nil {
+	if err := t.repo.Create(ctx, userId, test); err != nil {
 		return nil, nil
 	}
 	return &test, nil
