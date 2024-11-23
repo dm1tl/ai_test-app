@@ -7,12 +7,12 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type Auth struct {
+type AuthRepository struct {
 	db *sqlx.DB
 }
 
-func NewAuth(db *sqlx.DB) *Auth {
-	return &Auth{
+func NewAuthRepository(db *sqlx.DB) *AuthRepository {
+	return &AuthRepository{
 		db: db,
 	}
 }
@@ -42,7 +42,7 @@ func NewAuth(db *sqlx.DB) *Auth {
 //	return nil
 //}
 
-func (a *Auth) Create(ctx context.Context, userId int64, username string) error {
+func (a *AuthRepository) Create(ctx context.Context, userId int64, username string) error {
 	const op = "internal.repository.Create()"
 	err := executeQuery(ctx, a.db, "INSERT INTO users(id, username) VALUES ($1, $2)", userId, username)
 	if err != nil {

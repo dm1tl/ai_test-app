@@ -12,7 +12,13 @@ type SSOProvider interface {
 }
 
 type SSOClient struct {
-	client string
+	SSOProvider
+}
+
+func NewSSOClient(provider SSOProvider) *SSOClient {
+	return &SSOClient{
+		SSOProvider: provider,
+	}
 }
 
 func (s *SSOClient) Register(ctx context.Context, email string, password string) (int64, error) {
