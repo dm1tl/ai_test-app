@@ -33,7 +33,7 @@ func NewTestRepository(db *sqlx.DB) *TestRepository {
 
 func (t *TestRepository) Answer(ctx context.Context, userId int64, input appmodels.AnswersInput) (int64, error) {
 	const op = "internal.repository.test.Answer()"
-	query := "INSERT INTO tests (user_id, theme) VALUES ($1, $2) ON CONFLICT (user_id, theme) DO UPDATE SET score = score + $3 RETURNING id"
+	query := "INSERT INTO tests (user_id, theme, score) VALUES ($1, $2, $3) ON CONFLICT (user_id, theme) DO UPDATE SET score = tests.score + EXCLUDED.score RETURNING id"
 	stmt, err := t.db.PrepareContext(ctx, query)
 	if err != nil {
 		return 0, fmt.Errorf("%s: %w", op, err)

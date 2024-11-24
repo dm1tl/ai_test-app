@@ -11,16 +11,12 @@ type SSOProvider interface {
 	Delete(ctx context.Context, id int64) error
 }
 
-type SSOClient struct {
+type SSOClientWrapper struct {
 	SSOProvider
 }
 
-func NewSSOClient(provider SSOProvider) *SSOClient {
-	return &SSOClient{
+func NewSSOClientWrapper(provider SSOProvider) *SSOClientWrapper {
+	return &SSOClientWrapper{
 		SSOProvider: provider,
 	}
-}
-
-func (s *SSOClient) Register(ctx context.Context, email string, password string) (int64, error) {
-	return 0, nil
 }

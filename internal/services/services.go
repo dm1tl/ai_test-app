@@ -13,7 +13,7 @@ type Service struct {
 	Test
 }
 
-func NewService(repos *repository.Repository, ssoclient *sso.SSOClient, testm *testgen.GenClient) *Service {
+func NewService(repos *repository.Repository, ssoclient *sso.SSOClientWrapper, testm *testgen.GenClient) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization, ssoclient.SSOProvider),
 		Test:          NewTestService(repos.TestManager, testm.TestGenerator),

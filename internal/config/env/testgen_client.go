@@ -8,17 +8,17 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type SSOConfig struct {
+type GenTestConfig struct {
 	Address      string        `yaml:"address"`
 	Timeout      time.Duration `yaml:"timeout"`
 	RetriesCount uint          `yaml:"retriescount"`
 }
 
-func NewSSOConfig() (*SSOConfig, error) {
-	var config SSOConfig
-	filepath := os.Getenv("SSO_CONFIG_PATH")
+func NewGenTestConfig() (*GenTestConfig, error) {
+	var config GenTestConfig
+	filepath := os.Getenv("GEN_CONFIG_PATH")
 	if filepath == "" {
-		return nil, fmt.Errorf("SSO_CONFIG_PATH is empty")
+		return nil, fmt.Errorf("GEN_CONFIG_PATH is empty")
 	}
 	configFile, err := os.ReadFile(filepath)
 	if err != nil {

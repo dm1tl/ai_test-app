@@ -13,10 +13,6 @@ type GenClient struct {
 	TestGenerator
 }
 
-func (g *GenClient) Generate(ctx context.Context, input appmodels.TestInput) (appmodels.TestOutput, error) {
-	return appmodels.TestOutput{}, nil
-}
-
 func NewGenClient(generator TestGenerator) *GenClient {
 	return &GenClient{
 		TestGenerator: generator,

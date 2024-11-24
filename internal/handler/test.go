@@ -21,7 +21,7 @@ func (h *Handler) genTest(c *gin.Context) {
 		return
 	}
 	if input.Message == "" {
-		response.NewErrorResponse(c, http.StatusBadRequest, "empty data, please write some infornation about test")
+		response.NewErrorResponse(c, http.StatusBadRequest, "empty data, please write some information about test")
 		return
 	}
 	userId, err := h.getUserId(c)

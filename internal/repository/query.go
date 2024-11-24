@@ -36,7 +36,7 @@ func executeQuery(ctx context.Context, db *sqlx.DB, query string, args ...interf
 		return err
 	}
 	defer stmt.Close()
-	row, err := stmt.ExecContext(ctx, args)
+	row, err := stmt.ExecContext(ctx, args...)
 	if err != nil {
 		return err
 	}
